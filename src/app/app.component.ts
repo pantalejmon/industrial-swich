@@ -1,5 +1,7 @@
 import {Component} from '@angular/core';
+import {AxiosResponse} from 'axios';
 import {IpcRenderer} from 'electron';
+import {SWITCH1_INVOKED, SWITCH2_INVOKED, SWITCH_CHANNEL} from "../../model/constants";
 
 @Component({
   selector: 'app-root',
@@ -15,11 +17,12 @@ export class AppComponent {
     this.ipcRenderer = window.require('electron').ipcRenderer;
   }
 
-  switch1() {
-    this.ipcRenderer.send('switch1')
+  async switch1() {
+    const response: AxiosResponse = JSON.parse(await this.ipcRenderer.invoke(SWITCH_CHANNEL, SWITCH1_INVOKED))
+    console.log(response);
   }
 
   switch2() {
-    this.ipcRenderer.send('switch2')
+    this.ipcRenderer.invoke(SWITCH_CHANNEL, SWITCH2_INVOKED)
   }
 }

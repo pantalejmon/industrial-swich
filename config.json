@@ -1,0 +1,10 @@
+{
+  "switch1": {
+    "url": "https://onet.pl",
+    "method": "get"
+  },
+  "switch2": {
+    "url": "localhost",
+    "method": "get"
+  }
+}
