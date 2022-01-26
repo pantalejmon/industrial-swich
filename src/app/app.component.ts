@@ -1,7 +1,8 @@
 import {Component} from '@angular/core';
 import {AxiosResponse} from 'axios';
-import {IpcRenderer} from 'electron';
-import {SWITCH1_INVOKED, SWITCH2_INVOKED, SWITCH_CHANNEL} from "../../model/constants";
+import {SWITCH1_INVOKED, SWITCH_CHANNEL} from "../../model/constants";
+import {IpcService} from "./infrastructure/ipc.service";
+import {MessageService} from "primeng/api";
 
 @Component({
   selector: 'app-root',
@@ -9,20 +10,25 @@ import {SWITCH1_INVOKED, SWITCH2_INVOKED, SWITCH_CHANNEL} from "../../model/cons
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'industrial-switch';
 
-  ipcRenderer: IpcRenderer;
-
-  constructor() {
-    this.ipcRenderer = window.require('electron').ipcRenderer;
+  constructor(private ipcService: IpcService, private messageService: MessageService) {
   }
 
   async switch1() {
-    const response: AxiosResponse = JSON.parse(await this.ipcRenderer.invoke(SWITCH_CHANNEL, SWITCH1_INVOKED))
-    console.log(response);
+    const response: AxiosResponse = await this.ipcService.sendEventToMain(SWITCH_CHANNEL, SWITCH1_INVOKED) as AxiosResponse;
+    this.showMessage(response);
   }
 
-  switch2() {
-    this.ipcRenderer.invoke(SWITCH_CHANNEL, SWITCH2_INVOKED)
+  async switch2() {
+    const response: AxiosResponse = await this.ipcService.sendEventToMain(SWITCH_CHANNEL, SWITCH1_INVOKED) as AxiosResponse;
+    this.showMessage(response);
+  }
+
+  private showMessage(response: AxiosResponse) {
+    if (response.status >= 200 && response.status < 400) {
+      this.messageService.add({severity: 'success', summary: response.statusText});
+    } else {
+      this.messageService.add({severity: 'error', summary: response.statusText});
+    }
   }
 }

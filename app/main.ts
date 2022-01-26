@@ -21,6 +21,11 @@ try {
     }
   });
 
+  app.on('before-quit', () => {
+    win.removeAllListeners('close');
+    win.close();
+  });
+
   configIpc();
 } catch (e) {
   console.error(e);

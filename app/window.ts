@@ -12,10 +12,9 @@ export function createWindow(): BrowserWindow {
 
   // Create the browser window.
   win = new BrowserWindow({
+    autoHideMenuBar: true,
     x: 0,
     y: 0,
-    width: size.width,
-    height: size.height,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false
