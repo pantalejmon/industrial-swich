@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {AxiosResponse} from 'axios';
-import {SWITCH1_INVOKED, SWITCH_CHANNEL} from "../../model/constants";
+import {SWITCH1_INVOKED, SWITCH2_INVOKED, SWITCH_CHANNEL} from "../../model/constants";
 import {IpcService} from "./infrastructure/ipc.service";
 import {MessageService} from "primeng/api";
 
@@ -20,7 +20,7 @@ export class AppComponent {
   }
 
   async switch2() {
-    const response: AxiosResponse = await this.ipcService.sendEventToMain(SWITCH_CHANNEL, SWITCH1_INVOKED) as AxiosResponse;
+    const response: AxiosResponse = await this.ipcService.sendEventToMain(SWITCH_CHANNEL, SWITCH2_INVOKED) as AxiosResponse;
     this.showMessage(response);
   }
 
